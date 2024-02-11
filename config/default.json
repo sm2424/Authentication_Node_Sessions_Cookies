@@ -1,3 +1,9 @@
+
 {
-  "mongoURI": "mongodb://localhost:27017/sessions"
+  "mysql": {
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "database": "mydb1"
+  }
 }

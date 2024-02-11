@@ -1,20 +1,17 @@
+// /views/app.js
 const express = require("express");
 const session = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(session);
+const MySQLStore = require("express-mysql-session")(session);
 const config = require("config");
 
 const appController = require("./controllers/appController");
 const isAuth = require("./middleware/is-auth");
-const connectDB = require("./config/db");
-const mongoURI = config.get("mongoURI");
+const db = require("./config/db");
+const mysqlConfig = config.get("mysql");
 
 const app = express();
-connectDB();
 
-const store = new MongoDBStore({
-  uri: mongoURI,
-  collection: "mySessions",
-});
+const sessionStore = new MySQLStore(mysqlConfig, db);
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
@@ -24,7 +21,7 @@ app.use(
     secret: "secret",
     resave: false,
     saveUninitialized: false,
-    store: store,
+    store: sessionStore,
   })
 );
 

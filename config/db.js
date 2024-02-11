@@ -1,20 +1,18 @@
-const mongoose = require("mongoose");
-const config = require("config");
-const db = config.get("mongoURI");
+// /config/db.js
+const mysql = require("mysql");
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'mydb1'
+});
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(db, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    });
-
-    console.log("MongoDB connected");
-  } catch (error) {
-    console.log("Something went wrong with Database connection");
-    process.exit(1);
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL database: ' + err.stack);
+    return;
   }
-};
+  console.log('Connected to MySQL database as id ' + db.threadId);
+});
 
-module.exports = connectDB;
+module.exports = db;
